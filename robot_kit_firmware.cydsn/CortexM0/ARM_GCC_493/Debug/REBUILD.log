@@ -1,0 +1,113 @@
+--------------- Rebuild Started: 11/06/2016 16:00:41 Project: capsense_led, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\main.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\motors.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\bluetooth.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\state.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\cyfitter_cfg.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\cymetadata.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\red.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\red_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\blue.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\blue_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_gatt.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_eventHandler.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_HAL_INT.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_HAL_PVT.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_custom.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\pwm.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\PWM_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Clock_1.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ble_bless_isr.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Cm0Start.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\CyBootAsmGnu.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\CyFlash.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\CyLib.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\cyPm.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\cyutils.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\CyDMA.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\CyLFClk.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\green.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\green_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_forward.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_forward_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_backward.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_backward_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_forward.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_forward_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_backward.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_backward_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Clock_2.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Clock_3.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_speedcontroller.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_speedcontroller_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_speedcontroller.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_speedcontroller_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_control.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\left_control_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_control.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\right_control_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_ADC.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_ADC_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_ADC_INT.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_pin1.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_pin1_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_pin2.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_pin2_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_ADC_IRQ.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\IR_ADC_intClock.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Timer_1.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Timer_1_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\LCD_display.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\LCD_display_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\LCD_display_LCDPort.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\LCD_display_LCDPort_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Timer_2.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\Timer_2_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ECHO_pin.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ECHO_pin_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\isr_1.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\TRIGGER_pin.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\TRIGGER_pin_PM.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\isr_2.o"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\capsense_led.hex"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\capsense_led.elf"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\capsense_led.map"
+Deleting file ".\capsense_led.cycdx"
+Deleting file ".\capsense_led.svd"
+Deleting file ".\capsense_led.rpt"
+Deleting file ".\capsense_led_timing.html"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\.deps\C_FILE.P"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\.deps\ARM_C_FILE.P"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\.deps\GNU_ARM_ASM_FILE.P"
+cydsfit.exe -.appdatapath "C:\Users\alvin\AppData\Local\Cypress Semiconductor\PSoC Creator\3.3" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p C:\Users\alvin\Desktop\capsense_led.cydsn\capsense_led.cyprj -d CY8C4248LQI-BL583 -s C:\Users\alvin\Desktop\capsense_led.cydsn\Generated_Source\PSoC4 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Elaborating Design...
+HDL Generation ...
+Synthesis ...
+Place and Route ...
+Tech mapping ...
+Analog Placement ...
+Analog Routing ...
+Analog Code Generation ...
+Digital Placement ...
+Digital Routing ...
+Bitstream Generation ...
+Static timing analysis ...
+API Generation ...
+Dependency Generation ...
+Clean Temporary Files ...
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -Wno-main -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\main.c -o .\CortexM0\ARM_GCC_493\Debug\main.o
+In file included from Generated_Source\PSoC4/project.h:63:0,
+                 from .\main.c:12:
+.\main.c: In function 'main':
+Generated_Source\PSoC4/LCD_display.h:102:36: error: expected ',' or ';' before 'LCD_display_WriteControl'
+ #define LCD_display_ClearDisplay() LCD_display_WriteControl(LCD_display_CLEAR_DISPLAY)
+                                    ^
+.\main.c:97:1: note: in expansion of macro 'LCD_display_ClearDisplay'
+ LCD_display_ClearDisplay();
+ ^
+.\main.c:96:14: warning: unused variable 'test' [-Wunused-variable]
+         Mode test = get_robot_mode()
+              ^
+The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
+--------------- Rebuild Failed: 11/06/2016 16:00:53 ---------------

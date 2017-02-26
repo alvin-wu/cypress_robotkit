@@ -1,0 +1,1863 @@
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"motors.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.leftmotor_fwd,"ax",%progbits
+  18              		.align	2
+  19              		.global	leftmotor_fwd
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	leftmotor_fwd, %function
+  23              	leftmotor_fwd:
+  24              	.LFB43:
+  25              		.file 1 ".\\motors.c"
+   1:.\motors.c    **** /* ========================================
+   2:.\motors.c    ****  *
+   3:.\motors.c    ****  * Cypress Robot Kit
+   4:.\motors.c    ****  * Written by Alvin Wu and Todd Nguyen
+   5:.\motors.c    ****  * University of Illinois at Urbana-Champaign
+   6:.\motors.c    ****  * Free for distribution under General Public License
+   7:.\motors.c    ****  * 
+   8:.\motors.c    ****  * ========================================
+   9:.\motors.c    **** */
+  10:.\motors.c    **** 
+  11:.\motors.c    **** #include <project.h>
+  12:.\motors.c    **** #include "motors.h"
+  13:.\motors.c    **** 
+  14:.\motors.c    **** /*************************************************
+  15:.\motors.c    ****     Function to handle motor commands from BLE
+  16:.\motors.c    **** *************************************************/
+  17:.\motors.c    **** void handleMotors(uint8 motorcontrol, uint8 motorspeeds){
+  18:.\motors.c    **** 
+  19:.\motors.c    ****     uint8 rightMotorSpeed = motorspeeds & 0xF;
+  20:.\motors.c    ****     uint8 leftMotorSpeed = (motorspeeds >> 4) & 0xF;
+  21:.\motors.c    ****     
+  22:.\motors.c    ****     uint8 rightMotorDirection = motorcontrol & 1;
+  23:.\motors.c    ****     uint8 leftMotorDirection = (motorcontrol >> 1) & 1;
+  24:.\motors.c    ****     
+  25:.\motors.c    ****     //Stop
+  26:.\motors.c    ****     if(leftMotorSpeed == 0 && rightMotorSpeed == 0){
+  27:.\motors.c    ****         motor_stop();
+  28:.\motors.c    ****     }else{        
+  29:.\motors.c    ****         leftmotor_setspeed(leftMotorSpeed);
+  30:.\motors.c    ****         rightmotor_setspeed(rightMotorSpeed);
+  31:.\motors.c    ****         leftMotorDirection ? leftmotor_fwd() : leftmotor_rev();
+  32:.\motors.c    ****         rightMotorDirection ? rightmotor_fwd() : rightmotor_rev();
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 2
+
+
+  33:.\motors.c    ****     }
+  34:.\motors.c    **** }
+  35:.\motors.c    **** 
+  36:.\motors.c    **** 
+  37:.\motors.c    **** /*************************************************
+  38:.\motors.c    ****     Functions to set motor direction registers
+  39:.\motors.c    **** *************************************************/
+  40:.\motors.c    **** void move_fwd(){
+  41:.\motors.c    ****     leftmotor_fwd();
+  42:.\motors.c    ****     rightmotor_fwd();
+  43:.\motors.c    **** }
+  44:.\motors.c    **** 
+  45:.\motors.c    **** void move_rev(){
+  46:.\motors.c    ****     leftmotor_rev();
+  47:.\motors.c    ****     rightmotor_rev();
+  48:.\motors.c    **** }
+  49:.\motors.c    **** 
+  50:.\motors.c    **** void rotate_left(){
+  51:.\motors.c    ****     leftmotor_rev();
+  52:.\motors.c    ****     rightmotor_fwd();
+  53:.\motors.c    **** }
+  54:.\motors.c    **** 
+  55:.\motors.c    **** void rotate_right(){
+  56:.\motors.c    ****     leftmotor_fwd();
+  57:.\motors.c    ****     rightmotor_rev();
+  58:.\motors.c    **** }
+  59:.\motors.c    **** 
+  60:.\motors.c    **** void motor_stop(){
+  61:.\motors.c    ****     left_control_Write(0);
+  62:.\motors.c    ****     right_control_Write(0);
+  63:.\motors.c    ****     leftmotor_setspeed(0);
+  64:.\motors.c    ****     rightmotor_setspeed(0);
+  65:.\motors.c    **** }
+  66:.\motors.c    **** 
+  67:.\motors.c    **** 
+  68:.\motors.c    **** /*************************************************
+  69:.\motors.c    ****     Functions to control individual motors
+  70:.\motors.c    **** *************************************************/
+  71:.\motors.c    **** void leftmotor_fwd(){
+  26              		.loc 1 71 0
+  27              		.cfi_startproc
+  28 0000 08B5     		push	{r3, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 3, -8
+  31              		.cfi_offset 14, -4
+  72:.\motors.c    ****     left_control_Write(1);
+  32              		.loc 1 72 0
+  33 0002 0120     		mov	r0, #1
+  34 0004 FFF7FEFF 		bl	left_control_Write
+  35              	.LVL0:
+  73:.\motors.c    **** }
+  36              		.loc 1 73 0
+  37              		@ sp needed
+  38 0008 08BD     		pop	{r3, pc}
+  39              		.cfi_endproc
+  40              	.LFE43:
+  41              		.size	leftmotor_fwd, .-leftmotor_fwd
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 3
+
+
+  42              		.section	.text.leftmotor_rev,"ax",%progbits
+  43              		.align	2
+  44              		.global	leftmotor_rev
+  45              		.code	16
+  46              		.thumb_func
+  47              		.type	leftmotor_rev, %function
+  48              	leftmotor_rev:
+  49              	.LFB44:
+  74:.\motors.c    **** 
+  75:.\motors.c    **** void leftmotor_rev(){
+  50              		.loc 1 75 0
+  51              		.cfi_startproc
+  52 0000 08B5     		push	{r3, lr}
+  53              		.cfi_def_cfa_offset 8
+  54              		.cfi_offset 3, -8
+  55              		.cfi_offset 14, -4
+  76:.\motors.c    ****     left_control_Write(3);
+  56              		.loc 1 76 0
+  57 0002 0320     		mov	r0, #3
+  58 0004 FFF7FEFF 		bl	left_control_Write
+  59              	.LVL1:
+  77:.\motors.c    **** }
+  60              		.loc 1 77 0
+  61              		@ sp needed
+  62 0008 08BD     		pop	{r3, pc}
+  63              		.cfi_endproc
+  64              	.LFE44:
+  65              		.size	leftmotor_rev, .-leftmotor_rev
+  66 000a C046     		.section	.text.rightmotor_fwd,"ax",%progbits
+  67              		.align	2
+  68              		.global	rightmotor_fwd
+  69              		.code	16
+  70              		.thumb_func
+  71              		.type	rightmotor_fwd, %function
+  72              	rightmotor_fwd:
+  73              	.LFB45:
+  78:.\motors.c    **** 
+  79:.\motors.c    **** void rightmotor_fwd(){
+  74              		.loc 1 79 0
+  75              		.cfi_startproc
+  76 0000 08B5     		push	{r3, lr}
+  77              		.cfi_def_cfa_offset 8
+  78              		.cfi_offset 3, -8
+  79              		.cfi_offset 14, -4
+  80:.\motors.c    ****     right_control_Write(1);
+  80              		.loc 1 80 0
+  81 0002 0120     		mov	r0, #1
+  82 0004 FFF7FEFF 		bl	right_control_Write
+  83              	.LVL2:
+  81:.\motors.c    **** }
+  84              		.loc 1 81 0
+  85              		@ sp needed
+  86 0008 08BD     		pop	{r3, pc}
+  87              		.cfi_endproc
+  88              	.LFE45:
+  89              		.size	rightmotor_fwd, .-rightmotor_fwd
+  90 000a C046     		.section	.text.move_fwd,"ax",%progbits
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 4
+
+
+  91              		.align	2
+  92              		.global	move_fwd
+  93              		.code	16
+  94              		.thumb_func
+  95              		.type	move_fwd, %function
+  96              	move_fwd:
+  97              	.LFB38:
+  40:.\motors.c    ****     leftmotor_fwd();
+  98              		.loc 1 40 0
+  99              		.cfi_startproc
+ 100 0000 08B5     		push	{r3, lr}
+ 101              		.cfi_def_cfa_offset 8
+ 102              		.cfi_offset 3, -8
+ 103              		.cfi_offset 14, -4
+  41:.\motors.c    ****     rightmotor_fwd();
+ 104              		.loc 1 41 0
+ 105 0002 FFF7FEFF 		bl	leftmotor_fwd
+ 106              	.LVL3:
+  42:.\motors.c    **** }
+ 107              		.loc 1 42 0
+ 108 0006 FFF7FEFF 		bl	rightmotor_fwd
+ 109              	.LVL4:
+  43:.\motors.c    **** 
+ 110              		.loc 1 43 0
+ 111              		@ sp needed
+ 112 000a 08BD     		pop	{r3, pc}
+ 113              		.cfi_endproc
+ 114              	.LFE38:
+ 115              		.size	move_fwd, .-move_fwd
+ 116              		.section	.text.rotate_left,"ax",%progbits
+ 117              		.align	2
+ 118              		.global	rotate_left
+ 119              		.code	16
+ 120              		.thumb_func
+ 121              		.type	rotate_left, %function
+ 122              	rotate_left:
+ 123              	.LFB40:
+  50:.\motors.c    ****     leftmotor_rev();
+ 124              		.loc 1 50 0
+ 125              		.cfi_startproc
+ 126 0000 08B5     		push	{r3, lr}
+ 127              		.cfi_def_cfa_offset 8
+ 128              		.cfi_offset 3, -8
+ 129              		.cfi_offset 14, -4
+  51:.\motors.c    ****     rightmotor_fwd();
+ 130              		.loc 1 51 0
+ 131 0002 FFF7FEFF 		bl	leftmotor_rev
+ 132              	.LVL5:
+  52:.\motors.c    **** }
+ 133              		.loc 1 52 0
+ 134 0006 FFF7FEFF 		bl	rightmotor_fwd
+ 135              	.LVL6:
+  53:.\motors.c    **** 
+ 136              		.loc 1 53 0
+ 137              		@ sp needed
+ 138 000a 08BD     		pop	{r3, pc}
+ 139              		.cfi_endproc
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 5
+
+
+ 140              	.LFE40:
+ 141              		.size	rotate_left, .-rotate_left
+ 142              		.section	.text.rightmotor_rev,"ax",%progbits
+ 143              		.align	2
+ 144              		.global	rightmotor_rev
+ 145              		.code	16
+ 146              		.thumb_func
+ 147              		.type	rightmotor_rev, %function
+ 148              	rightmotor_rev:
+ 149              	.LFB46:
+  82:.\motors.c    **** 
+  83:.\motors.c    **** void rightmotor_rev(){
+ 150              		.loc 1 83 0
+ 151              		.cfi_startproc
+ 152 0000 08B5     		push	{r3, lr}
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 3, -8
+ 155              		.cfi_offset 14, -4
+  84:.\motors.c    ****     right_control_Write(3);
+ 156              		.loc 1 84 0
+ 157 0002 0320     		mov	r0, #3
+ 158 0004 FFF7FEFF 		bl	right_control_Write
+ 159              	.LVL7:
+  85:.\motors.c    **** }
+ 160              		.loc 1 85 0
+ 161              		@ sp needed
+ 162 0008 08BD     		pop	{r3, pc}
+ 163              		.cfi_endproc
+ 164              	.LFE46:
+ 165              		.size	rightmotor_rev, .-rightmotor_rev
+ 166 000a C046     		.section	.text.move_rev,"ax",%progbits
+ 167              		.align	2
+ 168              		.global	move_rev
+ 169              		.code	16
+ 170              		.thumb_func
+ 171              		.type	move_rev, %function
+ 172              	move_rev:
+ 173              	.LFB39:
+  45:.\motors.c    ****     leftmotor_rev();
+ 174              		.loc 1 45 0
+ 175              		.cfi_startproc
+ 176 0000 08B5     		push	{r3, lr}
+ 177              		.cfi_def_cfa_offset 8
+ 178              		.cfi_offset 3, -8
+ 179              		.cfi_offset 14, -4
+  46:.\motors.c    ****     rightmotor_rev();
+ 180              		.loc 1 46 0
+ 181 0002 FFF7FEFF 		bl	leftmotor_rev
+ 182              	.LVL8:
+  47:.\motors.c    **** }
+ 183              		.loc 1 47 0
+ 184 0006 FFF7FEFF 		bl	rightmotor_rev
+ 185              	.LVL9:
+  48:.\motors.c    **** 
+ 186              		.loc 1 48 0
+ 187              		@ sp needed
+ 188 000a 08BD     		pop	{r3, pc}
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 6
+
+
+ 189              		.cfi_endproc
+ 190              	.LFE39:
+ 191              		.size	move_rev, .-move_rev
+ 192              		.section	.text.rotate_right,"ax",%progbits
+ 193              		.align	2
+ 194              		.global	rotate_right
+ 195              		.code	16
+ 196              		.thumb_func
+ 197              		.type	rotate_right, %function
+ 198              	rotate_right:
+ 199              	.LFB41:
+  55:.\motors.c    ****     leftmotor_fwd();
+ 200              		.loc 1 55 0
+ 201              		.cfi_startproc
+ 202 0000 08B5     		push	{r3, lr}
+ 203              		.cfi_def_cfa_offset 8
+ 204              		.cfi_offset 3, -8
+ 205              		.cfi_offset 14, -4
+  56:.\motors.c    ****     rightmotor_rev();
+ 206              		.loc 1 56 0
+ 207 0002 FFF7FEFF 		bl	leftmotor_fwd
+ 208              	.LVL10:
+  57:.\motors.c    **** }
+ 209              		.loc 1 57 0
+ 210 0006 FFF7FEFF 		bl	rightmotor_rev
+ 211              	.LVL11:
+  58:.\motors.c    **** 
+ 212              		.loc 1 58 0
+ 213              		@ sp needed
+ 214 000a 08BD     		pop	{r3, pc}
+ 215              		.cfi_endproc
+ 216              	.LFE41:
+ 217              		.size	rotate_right, .-rotate_right
+ 218              		.section	.text.leftmotor_setspeed,"ax",%progbits
+ 219              		.align	2
+ 220              		.global	leftmotor_setspeed
+ 221              		.code	16
+ 222              		.thumb_func
+ 223              		.type	leftmotor_setspeed, %function
+ 224              	leftmotor_setspeed:
+ 225              	.LFB48:
+  86:.\motors.c    **** 
+  87:.\motors.c    **** void setspeed(uint8 speed){
+  88:.\motors.c    ****     leftmotor_setspeed(speed);
+  89:.\motors.c    ****     rightmotor_setspeed(speed);
+  90:.\motors.c    **** }
+  91:.\motors.c    **** 
+  92:.\motors.c    **** void leftmotor_setspeed(uint8 speed){
+ 226              		.loc 1 92 0
+ 227              		.cfi_startproc
+ 228              	.LVL12:
+ 229 0000 08B5     		push	{r3, lr}
+ 230              		.cfi_def_cfa_offset 8
+ 231              		.cfi_offset 3, -8
+ 232              		.cfi_offset 14, -4
+  93:.\motors.c    ****     if(speed == 0){
+ 233              		.loc 1 93 0
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 7
+
+
+ 234 0002 0028     		cmp	r0, #0
+ 235 0004 02D1     		bne	.L10
+  94:.\motors.c    ****         left_speedcontroller_WriteCompare(0);
+ 236              		.loc 1 94 0
+ 237 0006 FFF7FEFF 		bl	left_speedcontroller_WriteCompare
+ 238              	.LVL13:
+ 239 000a 02E0     		b	.L9
+ 240              	.LVL14:
+ 241              	.L10:
+ 242              	.LBB2:
+  95:.\motors.c    ****     } else {
+  96:.\motors.c    ****         int setspeed = (int) (speed + 8);
+ 243              		.loc 1 96 0
+ 244 000c 0830     		add	r0, r0, #8
+ 245              	.LVL15:
+  97:.\motors.c    ****         left_speedcontroller_WriteCompare(setspeed);
+ 246              		.loc 1 97 0
+ 247 000e FFF7FEFF 		bl	left_speedcontroller_WriteCompare
+ 248              	.LVL16:
+ 249              	.L9:
+ 250              	.LBE2:
+  98:.\motors.c    ****     }
+  99:.\motors.c    **** }
+ 251              		.loc 1 99 0
+ 252              		@ sp needed
+ 253 0012 08BD     		pop	{r3, pc}
+ 254              		.cfi_endproc
+ 255              	.LFE48:
+ 256              		.size	leftmotor_setspeed, .-leftmotor_setspeed
+ 257              		.section	.text.rightmotor_setspeed,"ax",%progbits
+ 258              		.align	2
+ 259              		.global	rightmotor_setspeed
+ 260              		.code	16
+ 261              		.thumb_func
+ 262              		.type	rightmotor_setspeed, %function
+ 263              	rightmotor_setspeed:
+ 264              	.LFB49:
+ 100:.\motors.c    **** 
+ 101:.\motors.c    **** void rightmotor_setspeed(uint8 speed){
+ 265              		.loc 1 101 0
+ 266              		.cfi_startproc
+ 267              	.LVL17:
+ 268 0000 08B5     		push	{r3, lr}
+ 269              		.cfi_def_cfa_offset 8
+ 270              		.cfi_offset 3, -8
+ 271              		.cfi_offset 14, -4
+ 102:.\motors.c    ****     if(speed == 0){
+ 272              		.loc 1 102 0
+ 273 0002 0028     		cmp	r0, #0
+ 274 0004 02D1     		bne	.L13
+ 103:.\motors.c    ****         right_speedcontroller_WriteCompare(0);
+ 275              		.loc 1 103 0
+ 276 0006 FFF7FEFF 		bl	right_speedcontroller_WriteCompare
+ 277              	.LVL18:
+ 278 000a 02E0     		b	.L12
+ 279              	.LVL19:
+ 280              	.L13:
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 8
+
+
+ 281              	.LBB3:
+ 104:.\motors.c    ****     } else {
+ 105:.\motors.c    ****         int setspeed = (int) (speed + 8);
+ 282              		.loc 1 105 0
+ 283 000c 0830     		add	r0, r0, #8
+ 284              	.LVL20:
+ 106:.\motors.c    ****         right_speedcontroller_WriteCompare(setspeed);
+ 285              		.loc 1 106 0
+ 286 000e FFF7FEFF 		bl	right_speedcontroller_WriteCompare
+ 287              	.LVL21:
+ 288              	.L12:
+ 289              	.LBE3:
+ 107:.\motors.c    ****     }
+ 108:.\motors.c    **** }
+ 290              		.loc 1 108 0
+ 291              		@ sp needed
+ 292 0012 08BD     		pop	{r3, pc}
+ 293              		.cfi_endproc
+ 294              	.LFE49:
+ 295              		.size	rightmotor_setspeed, .-rightmotor_setspeed
+ 296              		.section	.text.motor_stop,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	motor_stop
+ 299              		.code	16
+ 300              		.thumb_func
+ 301              		.type	motor_stop, %function
+ 302              	motor_stop:
+ 303              	.LFB42:
+  60:.\motors.c    ****     left_control_Write(0);
+ 304              		.loc 1 60 0
+ 305              		.cfi_startproc
+ 306 0000 08B5     		push	{r3, lr}
+ 307              		.cfi_def_cfa_offset 8
+ 308              		.cfi_offset 3, -8
+ 309              		.cfi_offset 14, -4
+  61:.\motors.c    ****     right_control_Write(0);
+ 310              		.loc 1 61 0
+ 311 0002 0020     		mov	r0, #0
+ 312 0004 FFF7FEFF 		bl	left_control_Write
+ 313              	.LVL22:
+  62:.\motors.c    ****     leftmotor_setspeed(0);
+ 314              		.loc 1 62 0
+ 315 0008 0020     		mov	r0, #0
+ 316 000a FFF7FEFF 		bl	right_control_Write
+ 317              	.LVL23:
+  63:.\motors.c    ****     rightmotor_setspeed(0);
+ 318              		.loc 1 63 0
+ 319 000e 0020     		mov	r0, #0
+ 320 0010 FFF7FEFF 		bl	leftmotor_setspeed
+ 321              	.LVL24:
+  64:.\motors.c    **** }
+ 322              		.loc 1 64 0
+ 323 0014 0020     		mov	r0, #0
+ 324 0016 FFF7FEFF 		bl	rightmotor_setspeed
+ 325              	.LVL25:
+  65:.\motors.c    **** 
+ 326              		.loc 1 65 0
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 9
+
+
+ 327              		@ sp needed
+ 328 001a 08BD     		pop	{r3, pc}
+ 329              		.cfi_endproc
+ 330              	.LFE42:
+ 331              		.size	motor_stop, .-motor_stop
+ 332              		.section	.text.handleMotors,"ax",%progbits
+ 333              		.align	2
+ 334              		.global	handleMotors
+ 335              		.code	16
+ 336              		.thumb_func
+ 337              		.type	handleMotors, %function
+ 338              	handleMotors:
+ 339              	.LFB37:
+  17:.\motors.c    **** 
+ 340              		.loc 1 17 0
+ 341              		.cfi_startproc
+ 342              	.LVL26:
+ 343 0000 70B5     		push	{r4, r5, r6, lr}
+ 344              		.cfi_def_cfa_offset 16
+ 345              		.cfi_offset 4, -16
+ 346              		.cfi_offset 5, -12
+ 347              		.cfi_offset 6, -8
+ 348              		.cfi_offset 14, -4
+  19:.\motors.c    ****     uint8 leftMotorSpeed = (motorspeeds >> 4) & 0xF;
+ 349              		.loc 1 19 0
+ 350 0002 0F25     		mov	r5, #15
+ 351 0004 0D40     		and	r5, r1
+ 352              	.LVL27:
+  20:.\motors.c    ****     
+ 353              		.loc 1 20 0
+ 354 0006 0909     		lsr	r1, r1, #4
+ 355              	.LVL28:
+  22:.\motors.c    ****     uint8 leftMotorDirection = (motorcontrol >> 1) & 1;
+ 356              		.loc 1 22 0
+ 357 0008 0124     		mov	r4, #1
+ 358 000a 261C     		mov	r6, r4
+ 359 000c 0640     		and	r6, r0
+ 360              	.LVL29:
+  23:.\motors.c    ****     
+ 361              		.loc 1 23 0
+ 362 000e 4308     		lsr	r3, r0, #1
+ 363 0010 1C40     		and	r4, r3
+ 364              	.LVL30:
+  26:.\motors.c    ****         motor_stop();
+ 365              		.loc 1 26 0
+ 366 0012 0B1C     		mov	r3, r1
+ 367 0014 2B43     		orr	r3, r5
+ 368 0016 02D1     		bne	.L17
+  27:.\motors.c    ****     }else{        
+ 369              		.loc 1 27 0
+ 370 0018 FFF7FEFF 		bl	motor_stop
+ 371              	.LVL31:
+ 372 001c 13E0     		b	.L16
+ 373              	.LVL32:
+ 374              	.L17:
+  29:.\motors.c    ****         rightmotor_setspeed(rightMotorSpeed);
+ 375              		.loc 1 29 0
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 10
+
+
+ 376 001e 081C     		mov	r0, r1
+ 377              	.LVL33:
+ 378 0020 FFF7FEFF 		bl	leftmotor_setspeed
+ 379              	.LVL34:
+  30:.\motors.c    ****         leftMotorDirection ? leftmotor_fwd() : leftmotor_rev();
+ 380              		.loc 1 30 0
+ 381 0024 281C     		mov	r0, r5
+ 382 0026 FFF7FEFF 		bl	rightmotor_setspeed
+ 383              	.LVL35:
+  31:.\motors.c    ****         rightMotorDirection ? rightmotor_fwd() : rightmotor_rev();
+ 384              		.loc 1 31 0
+ 385 002a 002C     		cmp	r4, #0
+ 386 002c 02D0     		beq	.L19
+  31:.\motors.c    ****         rightMotorDirection ? rightmotor_fwd() : rightmotor_rev();
+ 387              		.loc 1 31 0 is_stmt 0 discriminator 1
+ 388 002e FFF7FEFF 		bl	leftmotor_fwd
+ 389              	.LVL36:
+ 390 0032 01E0     		b	.L20
+ 391              	.L19:
+  31:.\motors.c    ****         rightMotorDirection ? rightmotor_fwd() : rightmotor_rev();
+ 392              		.loc 1 31 0 discriminator 2
+ 393 0034 FFF7FEFF 		bl	leftmotor_rev
+ 394              	.LVL37:
+ 395              	.L20:
+  32:.\motors.c    ****     }
+ 396              		.loc 1 32 0 is_stmt 1
+ 397 0038 002E     		cmp	r6, #0
+ 398 003a 02D0     		beq	.L21
+  32:.\motors.c    ****     }
+ 399              		.loc 1 32 0 is_stmt 0 discriminator 1
+ 400 003c FFF7FEFF 		bl	rightmotor_fwd
+ 401              	.LVL38:
+ 402 0040 01E0     		b	.L16
+ 403              	.L21:
+  32:.\motors.c    ****     }
+ 404              		.loc 1 32 0 discriminator 2
+ 405 0042 FFF7FEFF 		bl	rightmotor_rev
+ 406              	.LVL39:
+ 407              	.L16:
+  34:.\motors.c    **** 
+ 408              		.loc 1 34 0 is_stmt 1
+ 409              		@ sp needed
+ 410              	.LVL40:
+ 411              	.LVL41:
+ 412              	.LVL42:
+ 413 0046 70BD     		pop	{r4, r5, r6, pc}
+ 414              		.cfi_endproc
+ 415              	.LFE37:
+ 416              		.size	handleMotors, .-handleMotors
+ 417              		.section	.text.setspeed,"ax",%progbits
+ 418              		.align	2
+ 419              		.global	setspeed
+ 420              		.code	16
+ 421              		.thumb_func
+ 422              		.type	setspeed, %function
+ 423              	setspeed:
+ 424              	.LFB47:
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 11
+
+
+  87:.\motors.c    ****     leftmotor_setspeed(speed);
+ 425              		.loc 1 87 0
+ 426              		.cfi_startproc
+ 427              	.LVL43:
+ 428 0000 10B5     		push	{r4, lr}
+ 429              		.cfi_def_cfa_offset 8
+ 430              		.cfi_offset 4, -8
+ 431              		.cfi_offset 14, -4
+ 432 0002 041C     		mov	r4, r0
+  88:.\motors.c    ****     rightmotor_setspeed(speed);
+ 433              		.loc 1 88 0
+ 434 0004 FFF7FEFF 		bl	leftmotor_setspeed
+ 435              	.LVL44:
+  89:.\motors.c    **** }
+ 436              		.loc 1 89 0
+ 437 0008 201C     		mov	r0, r4
+ 438 000a FFF7FEFF 		bl	rightmotor_setspeed
+ 439              	.LVL45:
+  90:.\motors.c    **** 
+ 440              		.loc 1 90 0
+ 441              		@ sp needed
+ 442 000e 10BD     		pop	{r4, pc}
+ 443              		.cfi_endproc
+ 444              	.LFE47:
+ 445              		.size	setspeed, .-setspeed
+ 446              		.text
+ 447              	.Letext0:
+ 448              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 449              		.file 3 "Generated_Source\\PSoC4/left_control.h"
+ 450              		.file 4 "Generated_Source\\PSoC4/right_control.h"
+ 451              		.file 5 "Generated_Source\\PSoC4/left_speedcontroller.h"
+ 452              		.file 6 "Generated_Source\\PSoC4/right_speedcontroller.h"
+ 453              		.section	.debug_info,"",%progbits
+ 454              	.Ldebug_info0:
+ 455 0000 1B040000 		.4byte	0x41b
+ 456 0004 0400     		.2byte	0x4
+ 457 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 458 000a 04       		.byte	0x4
+ 459 000b 01       		.uleb128 0x1
+ 460 000c B5010000 		.4byte	.LASF38
+ 461 0010 01       		.byte	0x1
+ 462 0011 51020000 		.4byte	.LASF39
+ 463 0015 3D000000 		.4byte	.LASF40
+ 464 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 465 001d 00000000 		.4byte	0
+ 466 0021 00000000 		.4byte	.Ldebug_line0
+ 467 0025 02       		.uleb128 0x2
+ 468 0026 01       		.byte	0x1
+ 469 0027 06       		.byte	0x6
+ 470 0028 B8020000 		.4byte	.LASF0
+ 471 002c 02       		.uleb128 0x2
+ 472 002d 01       		.byte	0x1
+ 473 002e 08       		.byte	0x8
+ 474 002f E1000000 		.4byte	.LASF1
+ 475 0033 02       		.uleb128 0x2
+ 476 0034 02       		.byte	0x2
+ 477 0035 05       		.byte	0x5
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 12
+
+
+ 478 0036 98020000 		.4byte	.LASF2
+ 479 003a 02       		.uleb128 0x2
+ 480 003b 02       		.byte	0x2
+ 481 003c 07       		.byte	0x7
+ 482 003d D7020000 		.4byte	.LASF3
+ 483 0041 02       		.uleb128 0x2
+ 484 0042 04       		.byte	0x4
+ 485 0043 05       		.byte	0x5
+ 486 0044 AF020000 		.4byte	.LASF4
+ 487 0048 02       		.uleb128 0x2
+ 488 0049 04       		.byte	0x4
+ 489 004a 07       		.byte	0x7
+ 490 004b 66010000 		.4byte	.LASF5
+ 491 004f 02       		.uleb128 0x2
+ 492 0050 08       		.byte	0x8
+ 493 0051 05       		.byte	0x5
+ 494 0052 43020000 		.4byte	.LASF6
+ 495 0056 02       		.uleb128 0x2
+ 496 0057 08       		.byte	0x8
+ 497 0058 07       		.byte	0x7
+ 498 0059 CA000000 		.4byte	.LASF7
+ 499 005d 03       		.uleb128 0x3
+ 500 005e 04       		.byte	0x4
+ 501 005f 05       		.byte	0x5
+ 502 0060 696E7400 		.ascii	"int\000"
+ 503 0064 02       		.uleb128 0x2
+ 504 0065 04       		.byte	0x4
+ 505 0066 07       		.byte	0x7
+ 506 0067 93000000 		.4byte	.LASF8
+ 507 006b 04       		.uleb128 0x4
+ 508 006c 0F010000 		.4byte	.LASF9
+ 509 0070 02       		.byte	0x2
+ 510 0071 9801     		.2byte	0x198
+ 511 0073 2C000000 		.4byte	0x2c
+ 512 0077 04       		.uleb128 0x4
+ 513 0078 5F010000 		.4byte	.LASF10
+ 514 007c 02       		.byte	0x2
+ 515 007d 9A01     		.2byte	0x19a
+ 516 007f 48000000 		.4byte	0x48
+ 517 0083 02       		.uleb128 0x2
+ 518 0084 04       		.byte	0x4
+ 519 0085 04       		.byte	0x4
+ 520 0086 C4000000 		.4byte	.LASF11
+ 521 008a 02       		.uleb128 0x2
+ 522 008b 08       		.byte	0x8
+ 523 008c 04       		.byte	0x4
+ 524 008d AF000000 		.4byte	.LASF12
+ 525 0091 02       		.uleb128 0x2
+ 526 0092 01       		.byte	0x1
+ 527 0093 08       		.byte	0x8
+ 528 0094 94010000 		.4byte	.LASF13
+ 529 0098 02       		.uleb128 0x2
+ 530 0099 04       		.byte	0x4
+ 531 009a 07       		.byte	0x7
+ 532 009b AC010000 		.4byte	.LASF14
+ 533 009f 05       		.uleb128 0x5
+ 534 00a0 29010000 		.4byte	.LASF15
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 13
+
+
+ 535 00a4 01       		.byte	0x1
+ 536 00a5 47       		.byte	0x47
+ 537 00a6 00000000 		.4byte	.LFB43
+ 538 00aa 0A000000 		.4byte	.LFE43-.LFB43
+ 539 00ae 01       		.uleb128 0x1
+ 540 00af 9C       		.byte	0x9c
+ 541 00b0 C4000000 		.4byte	0xc4
+ 542 00b4 06       		.uleb128 0x6
+ 543 00b5 08000000 		.4byte	.LVL0
+ 544 00b9 DC030000 		.4byte	0x3dc
+ 545 00bd 07       		.uleb128 0x7
+ 546 00be 01       		.uleb128 0x1
+ 547 00bf 50       		.byte	0x50
+ 548 00c0 01       		.uleb128 0x1
+ 549 00c1 31       		.byte	0x31
+ 550 00c2 00       		.byte	0
+ 551 00c3 00       		.byte	0
+ 552 00c4 05       		.uleb128 0x5
+ 553 00c5 B6000000 		.4byte	.LASF16
+ 554 00c9 01       		.byte	0x1
+ 555 00ca 4B       		.byte	0x4b
+ 556 00cb 00000000 		.4byte	.LFB44
+ 557 00cf 0A000000 		.4byte	.LFE44-.LFB44
+ 558 00d3 01       		.uleb128 0x1
+ 559 00d4 9C       		.byte	0x9c
+ 560 00d5 E9000000 		.4byte	0xe9
+ 561 00d9 06       		.uleb128 0x6
+ 562 00da 08000000 		.4byte	.LVL1
+ 563 00de DC030000 		.4byte	0x3dc
+ 564 00e2 07       		.uleb128 0x7
+ 565 00e3 01       		.uleb128 0x1
+ 566 00e4 50       		.byte	0x50
+ 567 00e5 01       		.uleb128 0x1
+ 568 00e6 33       		.byte	0x33
+ 569 00e7 00       		.byte	0
+ 570 00e8 00       		.byte	0
+ 571 00e9 05       		.uleb128 0x5
+ 572 00ea A0000000 		.4byte	.LASF17
+ 573 00ee 01       		.byte	0x1
+ 574 00ef 4F       		.byte	0x4f
+ 575 00f0 00000000 		.4byte	.LFB45
+ 576 00f4 0A000000 		.4byte	.LFE45-.LFB45
+ 577 00f8 01       		.uleb128 0x1
+ 578 00f9 9C       		.byte	0x9c
+ 579 00fa 0E010000 		.4byte	0x10e
+ 580 00fe 06       		.uleb128 0x6
+ 581 00ff 08000000 		.4byte	.LVL2
+ 582 0103 ED030000 		.4byte	0x3ed
+ 583 0107 07       		.uleb128 0x7
+ 584 0108 01       		.uleb128 0x1
+ 585 0109 50       		.byte	0x50
+ 586 010a 01       		.uleb128 0x1
+ 587 010b 31       		.byte	0x31
+ 588 010c 00       		.byte	0
+ 589 010d 00       		.byte	0
+ 590 010e 05       		.uleb128 0x5
+ 591 010f 5C020000 		.4byte	.LASF18
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 14
+
+
+ 592 0113 01       		.byte	0x1
+ 593 0114 28       		.byte	0x28
+ 594 0115 00000000 		.4byte	.LFB38
+ 595 0119 0C000000 		.4byte	.LFE38-.LFB38
+ 596 011d 01       		.uleb128 0x1
+ 597 011e 9C       		.byte	0x9c
+ 598 011f 36010000 		.4byte	0x136
+ 599 0123 08       		.uleb128 0x8
+ 600 0124 06000000 		.4byte	.LVL3
+ 601 0128 9F000000 		.4byte	0x9f
+ 602 012c 08       		.uleb128 0x8
+ 603 012d 0A000000 		.4byte	.LVL4
+ 604 0131 E9000000 		.4byte	0xe9
+ 605 0135 00       		.byte	0
+ 606 0136 05       		.uleb128 0x5
+ 607 0137 03010000 		.4byte	.LASF19
+ 608 013b 01       		.byte	0x1
+ 609 013c 32       		.byte	0x32
+ 610 013d 00000000 		.4byte	.LFB40
+ 611 0141 0C000000 		.4byte	.LFE40-.LFB40
+ 612 0145 01       		.uleb128 0x1
+ 613 0146 9C       		.byte	0x9c
+ 614 0147 5E010000 		.4byte	0x15e
+ 615 014b 08       		.uleb128 0x8
+ 616 014c 06000000 		.4byte	.LVL5
+ 617 0150 C4000000 		.4byte	0xc4
+ 618 0154 08       		.uleb128 0x8
+ 619 0155 0A000000 		.4byte	.LVL6
+ 620 0159 E9000000 		.4byte	0xe9
+ 621 015d 00       		.byte	0
+ 622 015e 05       		.uleb128 0x5
+ 623 015f F7020000 		.4byte	.LASF20
+ 624 0163 01       		.byte	0x1
+ 625 0164 53       		.byte	0x53
+ 626 0165 00000000 		.4byte	.LFB46
+ 627 0169 0A000000 		.4byte	.LFE46-.LFB46
+ 628 016d 01       		.uleb128 0x1
+ 629 016e 9C       		.byte	0x9c
+ 630 016f 83010000 		.4byte	0x183
+ 631 0173 06       		.uleb128 0x6
+ 632 0174 08000000 		.4byte	.LVL7
+ 633 0178 ED030000 		.4byte	0x3ed
+ 634 017c 07       		.uleb128 0x7
+ 635 017d 01       		.uleb128 0x1
+ 636 017e 50       		.byte	0x50
+ 637 017f 01       		.uleb128 0x1
+ 638 0180 33       		.byte	0x33
+ 639 0181 00       		.byte	0
+ 640 0182 00       		.byte	0
+ 641 0183 05       		.uleb128 0x5
+ 642 0184 8B010000 		.4byte	.LASF21
+ 643 0188 01       		.byte	0x1
+ 644 0189 2D       		.byte	0x2d
+ 645 018a 00000000 		.4byte	.LFB39
+ 646 018e 0C000000 		.4byte	.LFE39-.LFB39
+ 647 0192 01       		.uleb128 0x1
+ 648 0193 9C       		.byte	0x9c
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 15
+
+
+ 649 0194 AB010000 		.4byte	0x1ab
+ 650 0198 08       		.uleb128 0x8
+ 651 0199 06000000 		.4byte	.LVL8
+ 652 019d C4000000 		.4byte	0xc4
+ 653 01a1 08       		.uleb128 0x8
+ 654 01a2 0A000000 		.4byte	.LVL9
+ 655 01a6 5E010000 		.4byte	0x15e
+ 656 01aa 00       		.byte	0
+ 657 01ab 05       		.uleb128 0x5
+ 658 01ac 99010000 		.4byte	.LASF22
+ 659 01b0 01       		.byte	0x1
+ 660 01b1 37       		.byte	0x37
+ 661 01b2 00000000 		.4byte	.LFB41
+ 662 01b6 0C000000 		.4byte	.LFE41-.LFB41
+ 663 01ba 01       		.uleb128 0x1
+ 664 01bb 9C       		.byte	0x9c
+ 665 01bc D3010000 		.4byte	0x1d3
+ 666 01c0 08       		.uleb128 0x8
+ 667 01c1 06000000 		.4byte	.LVL10
+ 668 01c5 9F000000 		.4byte	0x9f
+ 669 01c9 08       		.uleb128 0x8
+ 670 01ca 0A000000 		.4byte	.LVL11
+ 671 01ce 5E010000 		.4byte	0x15e
+ 672 01d2 00       		.byte	0
+ 673 01d3 09       		.uleb128 0x9
+ 674 01d4 80000000 		.4byte	.LASF23
+ 675 01d8 01       		.byte	0x1
+ 676 01d9 5C       		.byte	0x5c
+ 677 01da 00000000 		.4byte	.LFB48
+ 678 01de 14000000 		.4byte	.LFE48-.LFB48
+ 679 01e2 01       		.uleb128 0x1
+ 680 01e3 9C       		.byte	0x9c
+ 681 01e4 27020000 		.4byte	0x227
+ 682 01e8 0A       		.uleb128 0xa
+ 683 01e9 A6010000 		.4byte	.LASF25
+ 684 01ed 01       		.byte	0x1
+ 685 01ee 5C       		.byte	0x5c
+ 686 01ef 6B000000 		.4byte	0x6b
+ 687 01f3 00000000 		.4byte	.LLST0
+ 688 01f7 0B       		.uleb128 0xb
+ 689 01f8 0C000000 		.4byte	.LBB2
+ 690 01fc 06000000 		.4byte	.LBE2-.LBB2
+ 691 0200 1D020000 		.4byte	0x21d
+ 692 0204 0C       		.uleb128 0xc
+ 693 0205 56010000 		.4byte	.LASF26
+ 694 0209 01       		.byte	0x1
+ 695 020a 60       		.byte	0x60
+ 696 020b 5D000000 		.4byte	0x5d
+ 697 020f 3A000000 		.4byte	.LLST1
+ 698 0213 08       		.uleb128 0x8
+ 699 0214 12000000 		.4byte	.LVL16
+ 700 0218 FE030000 		.4byte	0x3fe
+ 701 021c 00       		.byte	0
+ 702 021d 08       		.uleb128 0x8
+ 703 021e 0A000000 		.4byte	.LVL13
+ 704 0222 FE030000 		.4byte	0x3fe
+ 705 0226 00       		.byte	0
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 16
+
+
+ 706 0227 09       		.uleb128 0x9
+ 707 0228 15010000 		.4byte	.LASF24
+ 708 022c 01       		.byte	0x1
+ 709 022d 65       		.byte	0x65
+ 710 022e 00000000 		.4byte	.LFB49
+ 711 0232 14000000 		.4byte	.LFE49-.LFB49
+ 712 0236 01       		.uleb128 0x1
+ 713 0237 9C       		.byte	0x9c
+ 714 0238 7B020000 		.4byte	0x27b
+ 715 023c 0A       		.uleb128 0xa
+ 716 023d A6010000 		.4byte	.LASF25
+ 717 0241 01       		.byte	0x1
+ 718 0242 65       		.byte	0x65
+ 719 0243 6B000000 		.4byte	0x6b
+ 720 0247 4D000000 		.4byte	.LLST2
+ 721 024b 0B       		.uleb128 0xb
+ 722 024c 0C000000 		.4byte	.LBB3
+ 723 0250 06000000 		.4byte	.LBE3-.LBB3
+ 724 0254 71020000 		.4byte	0x271
+ 725 0258 0C       		.uleb128 0xc
+ 726 0259 56010000 		.4byte	.LASF26
+ 727 025d 01       		.byte	0x1
+ 728 025e 69       		.byte	0x69
+ 729 025f 5D000000 		.4byte	0x5d
+ 730 0263 87000000 		.4byte	.LLST3
+ 731 0267 08       		.uleb128 0x8
+ 732 0268 12000000 		.4byte	.LVL21
+ 733 026c 10040000 		.4byte	0x410
+ 734 0270 00       		.byte	0
+ 735 0271 08       		.uleb128 0x8
+ 736 0272 0A000000 		.4byte	.LVL18
+ 737 0276 10040000 		.4byte	0x410
+ 738 027a 00       		.byte	0
+ 739 027b 05       		.uleb128 0x5
+ 740 027c 4B010000 		.4byte	.LASF27
+ 741 0280 01       		.byte	0x1
+ 742 0281 3C       		.byte	0x3c
+ 743 0282 00000000 		.4byte	.LFB42
+ 744 0286 1C000000 		.4byte	.LFE42-.LFB42
+ 745 028a 01       		.uleb128 0x1
+ 746 028b 9C       		.byte	0x9c
+ 747 028c D9020000 		.4byte	0x2d9
+ 748 0290 0D       		.uleb128 0xd
+ 749 0291 08000000 		.4byte	.LVL22
+ 750 0295 DC030000 		.4byte	0x3dc
+ 751 0299 A3020000 		.4byte	0x2a3
+ 752 029d 07       		.uleb128 0x7
+ 753 029e 01       		.uleb128 0x1
+ 754 029f 50       		.byte	0x50
+ 755 02a0 01       		.uleb128 0x1
+ 756 02a1 30       		.byte	0x30
+ 757 02a2 00       		.byte	0
+ 758 02a3 0D       		.uleb128 0xd
+ 759 02a4 0E000000 		.4byte	.LVL23
+ 760 02a8 ED030000 		.4byte	0x3ed
+ 761 02ac B6020000 		.4byte	0x2b6
+ 762 02b0 07       		.uleb128 0x7
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 17
+
+
+ 763 02b1 01       		.uleb128 0x1
+ 764 02b2 50       		.byte	0x50
+ 765 02b3 01       		.uleb128 0x1
+ 766 02b4 30       		.byte	0x30
+ 767 02b5 00       		.byte	0
+ 768 02b6 0D       		.uleb128 0xd
+ 769 02b7 14000000 		.4byte	.LVL24
+ 770 02bb D3010000 		.4byte	0x1d3
+ 771 02bf C9020000 		.4byte	0x2c9
+ 772 02c3 07       		.uleb128 0x7
+ 773 02c4 01       		.uleb128 0x1
+ 774 02c5 50       		.byte	0x50
+ 775 02c6 01       		.uleb128 0x1
+ 776 02c7 30       		.byte	0x30
+ 777 02c8 00       		.byte	0
+ 778 02c9 06       		.uleb128 0x6
+ 779 02ca 1A000000 		.4byte	.LVL25
+ 780 02ce 27020000 		.4byte	0x227
+ 781 02d2 07       		.uleb128 0x7
+ 782 02d3 01       		.uleb128 0x1
+ 783 02d4 50       		.byte	0x50
+ 784 02d5 01       		.uleb128 0x1
+ 785 02d6 30       		.byte	0x30
+ 786 02d7 00       		.byte	0
+ 787 02d8 00       		.byte	0
+ 788 02d9 09       		.uleb128 0x9
+ 789 02da EA020000 		.4byte	.LASF28
+ 790 02de 01       		.byte	0x1
+ 791 02df 11       		.byte	0x11
+ 792 02e0 00000000 		.4byte	.LFB37
+ 793 02e4 48000000 		.4byte	.LFE37-.LFB37
+ 794 02e8 01       		.uleb128 0x1
+ 795 02e9 9C       		.byte	0x9c
+ 796 02ea 93030000 		.4byte	0x393
+ 797 02ee 0A       		.uleb128 0xa
+ 798 02ef A2020000 		.4byte	.LASF29
+ 799 02f3 01       		.byte	0x1
+ 800 02f4 11       		.byte	0x11
+ 801 02f5 6B000000 		.4byte	0x6b
+ 802 02f9 9A000000 		.4byte	.LLST4
+ 803 02fd 0A       		.uleb128 0xa
+ 804 02fe 00000000 		.4byte	.LASF30
+ 805 0302 01       		.byte	0x1
+ 806 0303 11       		.byte	0x11
+ 807 0304 6B000000 		.4byte	0x6b
+ 808 0308 D4000000 		.4byte	.LLST5
+ 809 030c 0C       		.uleb128 0xc
+ 810 030d 88020000 		.4byte	.LASF31
+ 811 0311 01       		.byte	0x1
+ 812 0312 13       		.byte	0x13
+ 813 0313 6B000000 		.4byte	0x6b
+ 814 0317 F5000000 		.4byte	.LLST6
+ 815 031b 0C       		.uleb128 0xc
+ 816 031c 2E000000 		.4byte	.LASF32
+ 817 0320 01       		.byte	0x1
+ 818 0321 14       		.byte	0x14
+ 819 0322 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 18
+
+
+ 820 0326 08010000 		.4byte	.LLST7
+ 821 032a 0C       		.uleb128 0xc
+ 822 032b 37010000 		.4byte	.LASF33
+ 823 032f 01       		.byte	0x1
+ 824 0330 16       		.byte	0x16
+ 825 0331 6B000000 		.4byte	0x6b
+ 826 0335 26010000 		.4byte	.LLST8
+ 827 0339 0C       		.uleb128 0xc
+ 828 033a C4020000 		.4byte	.LASF34
+ 829 033e 01       		.byte	0x1
+ 830 033f 17       		.byte	0x17
+ 831 0340 6B000000 		.4byte	0x6b
+ 832 0344 39010000 		.4byte	.LLST9
+ 833 0348 08       		.uleb128 0x8
+ 834 0349 1C000000 		.4byte	.LVL31
+ 835 034d 7B020000 		.4byte	0x27b
+ 836 0351 08       		.uleb128 0x8
+ 837 0352 24000000 		.4byte	.LVL34
+ 838 0356 D3010000 		.4byte	0x1d3
+ 839 035a 0D       		.uleb128 0xd
+ 840 035b 2A000000 		.4byte	.LVL35
+ 841 035f 27020000 		.4byte	0x227
+ 842 0363 6E030000 		.4byte	0x36e
+ 843 0367 07       		.uleb128 0x7
+ 844 0368 01       		.uleb128 0x1
+ 845 0369 50       		.byte	0x50
+ 846 036a 02       		.uleb128 0x2
+ 847 036b 75       		.byte	0x75
+ 848 036c 00       		.sleb128 0
+ 849 036d 00       		.byte	0
+ 850 036e 08       		.uleb128 0x8
+ 851 036f 32000000 		.4byte	.LVL36
+ 852 0373 9F000000 		.4byte	0x9f
+ 853 0377 08       		.uleb128 0x8
+ 854 0378 38000000 		.4byte	.LVL37
+ 855 037c C4000000 		.4byte	0xc4
+ 856 0380 08       		.uleb128 0x8
+ 857 0381 40000000 		.4byte	.LVL38
+ 858 0385 E9000000 		.4byte	0xe9
+ 859 0389 08       		.uleb128 0x8
+ 860 038a 46000000 		.4byte	.LVL39
+ 861 038e 5E010000 		.4byte	0x15e
+ 862 0392 00       		.byte	0
+ 863 0393 09       		.uleb128 0x9
+ 864 0394 56010000 		.4byte	.LASF26
+ 865 0398 01       		.byte	0x1
+ 866 0399 57       		.byte	0x57
+ 867 039a 00000000 		.4byte	.LFB47
+ 868 039e 10000000 		.4byte	.LFE47-.LFB47
+ 869 03a2 01       		.uleb128 0x1
+ 870 03a3 9C       		.byte	0x9c
+ 871 03a4 DC030000 		.4byte	0x3dc
+ 872 03a8 0A       		.uleb128 0xa
+ 873 03a9 A6010000 		.4byte	.LASF25
+ 874 03ad 01       		.byte	0x1
+ 875 03ae 57       		.byte	0x57
+ 876 03af 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 19
+
+
+ 877 03b3 4C010000 		.4byte	.LLST10
+ 878 03b7 0D       		.uleb128 0xd
+ 879 03b8 08000000 		.4byte	.LVL44
+ 880 03bc D3010000 		.4byte	0x1d3
+ 881 03c0 CB030000 		.4byte	0x3cb
+ 882 03c4 07       		.uleb128 0x7
+ 883 03c5 01       		.uleb128 0x1
+ 884 03c6 50       		.byte	0x50
+ 885 03c7 02       		.uleb128 0x2
+ 886 03c8 74       		.byte	0x74
+ 887 03c9 00       		.sleb128 0
+ 888 03ca 00       		.byte	0
+ 889 03cb 06       		.uleb128 0x6
+ 890 03cc 0E000000 		.4byte	.LVL45
+ 891 03d0 27020000 		.4byte	0x227
+ 892 03d4 07       		.uleb128 0x7
+ 893 03d5 01       		.uleb128 0x1
+ 894 03d6 50       		.byte	0x50
+ 895 03d7 02       		.uleb128 0x2
+ 896 03d8 74       		.byte	0x74
+ 897 03d9 00       		.sleb128 0
+ 898 03da 00       		.byte	0
+ 899 03db 00       		.byte	0
+ 900 03dc 0E       		.uleb128 0xe
+ 901 03dd 78010000 		.4byte	.LASF35
+ 902 03e1 03       		.byte	0x3
+ 903 03e2 27       		.byte	0x27
+ 904 03e3 ED030000 		.4byte	0x3ed
+ 905 03e7 0F       		.uleb128 0xf
+ 906 03e8 6B000000 		.4byte	0x6b
+ 907 03ec 00       		.byte	0
+ 908 03ed 0E       		.uleb128 0xe
+ 909 03ee EF000000 		.4byte	.LASF36
+ 910 03f2 04       		.byte	0x4
+ 911 03f3 27       		.byte	0x27
+ 912 03f4 FE030000 		.4byte	0x3fe
+ 913 03f8 0F       		.uleb128 0xf
+ 914 03f9 6B000000 		.4byte	0x6b
+ 915 03fd 00       		.byte	0
+ 916 03fe 10       		.uleb128 0x10
+ 917 03ff 0C000000 		.4byte	.LASF37
+ 918 0403 05       		.byte	0x5
+ 919 0404 5501     		.2byte	0x155
+ 920 0406 10040000 		.4byte	0x410
+ 921 040a 0F       		.uleb128 0xf
+ 922 040b 77000000 		.4byte	0x77
+ 923 040f 00       		.byte	0
+ 924 0410 11       		.uleb128 0x11
+ 925 0411 65020000 		.4byte	.LASF41
+ 926 0415 06       		.byte	0x6
+ 927 0416 5501     		.2byte	0x155
+ 928 0418 0F       		.uleb128 0xf
+ 929 0419 77000000 		.4byte	0x77
+ 930 041d 00       		.byte	0
+ 931 041e 00       		.byte	0
+ 932              		.section	.debug_abbrev,"",%progbits
+ 933              	.Ldebug_abbrev0:
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 20
+
+
+ 934 0000 01       		.uleb128 0x1
+ 935 0001 11       		.uleb128 0x11
+ 936 0002 01       		.byte	0x1
+ 937 0003 25       		.uleb128 0x25
+ 938 0004 0E       		.uleb128 0xe
+ 939 0005 13       		.uleb128 0x13
+ 940 0006 0B       		.uleb128 0xb
+ 941 0007 03       		.uleb128 0x3
+ 942 0008 0E       		.uleb128 0xe
+ 943 0009 1B       		.uleb128 0x1b
+ 944 000a 0E       		.uleb128 0xe
+ 945 000b 55       		.uleb128 0x55
+ 946 000c 17       		.uleb128 0x17
+ 947 000d 11       		.uleb128 0x11
+ 948 000e 01       		.uleb128 0x1
+ 949 000f 10       		.uleb128 0x10
+ 950 0010 17       		.uleb128 0x17
+ 951 0011 00       		.byte	0
+ 952 0012 00       		.byte	0
+ 953 0013 02       		.uleb128 0x2
+ 954 0014 24       		.uleb128 0x24
+ 955 0015 00       		.byte	0
+ 956 0016 0B       		.uleb128 0xb
+ 957 0017 0B       		.uleb128 0xb
+ 958 0018 3E       		.uleb128 0x3e
+ 959 0019 0B       		.uleb128 0xb
+ 960 001a 03       		.uleb128 0x3
+ 961 001b 0E       		.uleb128 0xe
+ 962 001c 00       		.byte	0
+ 963 001d 00       		.byte	0
+ 964 001e 03       		.uleb128 0x3
+ 965 001f 24       		.uleb128 0x24
+ 966 0020 00       		.byte	0
+ 967 0021 0B       		.uleb128 0xb
+ 968 0022 0B       		.uleb128 0xb
+ 969 0023 3E       		.uleb128 0x3e
+ 970 0024 0B       		.uleb128 0xb
+ 971 0025 03       		.uleb128 0x3
+ 972 0026 08       		.uleb128 0x8
+ 973 0027 00       		.byte	0
+ 974 0028 00       		.byte	0
+ 975 0029 04       		.uleb128 0x4
+ 976 002a 16       		.uleb128 0x16
+ 977 002b 00       		.byte	0
+ 978 002c 03       		.uleb128 0x3
+ 979 002d 0E       		.uleb128 0xe
+ 980 002e 3A       		.uleb128 0x3a
+ 981 002f 0B       		.uleb128 0xb
+ 982 0030 3B       		.uleb128 0x3b
+ 983 0031 05       		.uleb128 0x5
+ 984 0032 49       		.uleb128 0x49
+ 985 0033 13       		.uleb128 0x13
+ 986 0034 00       		.byte	0
+ 987 0035 00       		.byte	0
+ 988 0036 05       		.uleb128 0x5
+ 989 0037 2E       		.uleb128 0x2e
+ 990 0038 01       		.byte	0x1
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 21
+
+
+ 991 0039 3F       		.uleb128 0x3f
+ 992 003a 19       		.uleb128 0x19
+ 993 003b 03       		.uleb128 0x3
+ 994 003c 0E       		.uleb128 0xe
+ 995 003d 3A       		.uleb128 0x3a
+ 996 003e 0B       		.uleb128 0xb
+ 997 003f 3B       		.uleb128 0x3b
+ 998 0040 0B       		.uleb128 0xb
+ 999 0041 11       		.uleb128 0x11
+ 1000 0042 01       		.uleb128 0x1
+ 1001 0043 12       		.uleb128 0x12
+ 1002 0044 06       		.uleb128 0x6
+ 1003 0045 40       		.uleb128 0x40
+ 1004 0046 18       		.uleb128 0x18
+ 1005 0047 9742     		.uleb128 0x2117
+ 1006 0049 19       		.uleb128 0x19
+ 1007 004a 01       		.uleb128 0x1
+ 1008 004b 13       		.uleb128 0x13
+ 1009 004c 00       		.byte	0
+ 1010 004d 00       		.byte	0
+ 1011 004e 06       		.uleb128 0x6
+ 1012 004f 898201   		.uleb128 0x4109
+ 1013 0052 01       		.byte	0x1
+ 1014 0053 11       		.uleb128 0x11
+ 1015 0054 01       		.uleb128 0x1
+ 1016 0055 31       		.uleb128 0x31
+ 1017 0056 13       		.uleb128 0x13
+ 1018 0057 00       		.byte	0
+ 1019 0058 00       		.byte	0
+ 1020 0059 07       		.uleb128 0x7
+ 1021 005a 8A8201   		.uleb128 0x410a
+ 1022 005d 00       		.byte	0
+ 1023 005e 02       		.uleb128 0x2
+ 1024 005f 18       		.uleb128 0x18
+ 1025 0060 9142     		.uleb128 0x2111
+ 1026 0062 18       		.uleb128 0x18
+ 1027 0063 00       		.byte	0
+ 1028 0064 00       		.byte	0
+ 1029 0065 08       		.uleb128 0x8
+ 1030 0066 898201   		.uleb128 0x4109
+ 1031 0069 00       		.byte	0
+ 1032 006a 11       		.uleb128 0x11
+ 1033 006b 01       		.uleb128 0x1
+ 1034 006c 31       		.uleb128 0x31
+ 1035 006d 13       		.uleb128 0x13
+ 1036 006e 00       		.byte	0
+ 1037 006f 00       		.byte	0
+ 1038 0070 09       		.uleb128 0x9
+ 1039 0071 2E       		.uleb128 0x2e
+ 1040 0072 01       		.byte	0x1
+ 1041 0073 3F       		.uleb128 0x3f
+ 1042 0074 19       		.uleb128 0x19
+ 1043 0075 03       		.uleb128 0x3
+ 1044 0076 0E       		.uleb128 0xe
+ 1045 0077 3A       		.uleb128 0x3a
+ 1046 0078 0B       		.uleb128 0xb
+ 1047 0079 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 22
+
+
+ 1048 007a 0B       		.uleb128 0xb
+ 1049 007b 27       		.uleb128 0x27
+ 1050 007c 19       		.uleb128 0x19
+ 1051 007d 11       		.uleb128 0x11
+ 1052 007e 01       		.uleb128 0x1
+ 1053 007f 12       		.uleb128 0x12
+ 1054 0080 06       		.uleb128 0x6
+ 1055 0081 40       		.uleb128 0x40
+ 1056 0082 18       		.uleb128 0x18
+ 1057 0083 9742     		.uleb128 0x2117
+ 1058 0085 19       		.uleb128 0x19
+ 1059 0086 01       		.uleb128 0x1
+ 1060 0087 13       		.uleb128 0x13
+ 1061 0088 00       		.byte	0
+ 1062 0089 00       		.byte	0
+ 1063 008a 0A       		.uleb128 0xa
+ 1064 008b 05       		.uleb128 0x5
+ 1065 008c 00       		.byte	0
+ 1066 008d 03       		.uleb128 0x3
+ 1067 008e 0E       		.uleb128 0xe
+ 1068 008f 3A       		.uleb128 0x3a
+ 1069 0090 0B       		.uleb128 0xb
+ 1070 0091 3B       		.uleb128 0x3b
+ 1071 0092 0B       		.uleb128 0xb
+ 1072 0093 49       		.uleb128 0x49
+ 1073 0094 13       		.uleb128 0x13
+ 1074 0095 02       		.uleb128 0x2
+ 1075 0096 17       		.uleb128 0x17
+ 1076 0097 00       		.byte	0
+ 1077 0098 00       		.byte	0
+ 1078 0099 0B       		.uleb128 0xb
+ 1079 009a 0B       		.uleb128 0xb
+ 1080 009b 01       		.byte	0x1
+ 1081 009c 11       		.uleb128 0x11
+ 1082 009d 01       		.uleb128 0x1
+ 1083 009e 12       		.uleb128 0x12
+ 1084 009f 06       		.uleb128 0x6
+ 1085 00a0 01       		.uleb128 0x1
+ 1086 00a1 13       		.uleb128 0x13
+ 1087 00a2 00       		.byte	0
+ 1088 00a3 00       		.byte	0
+ 1089 00a4 0C       		.uleb128 0xc
+ 1090 00a5 34       		.uleb128 0x34
+ 1091 00a6 00       		.byte	0
+ 1092 00a7 03       		.uleb128 0x3
+ 1093 00a8 0E       		.uleb128 0xe
+ 1094 00a9 3A       		.uleb128 0x3a
+ 1095 00aa 0B       		.uleb128 0xb
+ 1096 00ab 3B       		.uleb128 0x3b
+ 1097 00ac 0B       		.uleb128 0xb
+ 1098 00ad 49       		.uleb128 0x49
+ 1099 00ae 13       		.uleb128 0x13
+ 1100 00af 02       		.uleb128 0x2
+ 1101 00b0 17       		.uleb128 0x17
+ 1102 00b1 00       		.byte	0
+ 1103 00b2 00       		.byte	0
+ 1104 00b3 0D       		.uleb128 0xd
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 23
+
+
+ 1105 00b4 898201   		.uleb128 0x4109
+ 1106 00b7 01       		.byte	0x1
+ 1107 00b8 11       		.uleb128 0x11
+ 1108 00b9 01       		.uleb128 0x1
+ 1109 00ba 31       		.uleb128 0x31
+ 1110 00bb 13       		.uleb128 0x13
+ 1111 00bc 01       		.uleb128 0x1
+ 1112 00bd 13       		.uleb128 0x13
+ 1113 00be 00       		.byte	0
+ 1114 00bf 00       		.byte	0
+ 1115 00c0 0E       		.uleb128 0xe
+ 1116 00c1 2E       		.uleb128 0x2e
+ 1117 00c2 01       		.byte	0x1
+ 1118 00c3 3F       		.uleb128 0x3f
+ 1119 00c4 19       		.uleb128 0x19
+ 1120 00c5 03       		.uleb128 0x3
+ 1121 00c6 0E       		.uleb128 0xe
+ 1122 00c7 3A       		.uleb128 0x3a
+ 1123 00c8 0B       		.uleb128 0xb
+ 1124 00c9 3B       		.uleb128 0x3b
+ 1125 00ca 0B       		.uleb128 0xb
+ 1126 00cb 27       		.uleb128 0x27
+ 1127 00cc 19       		.uleb128 0x19
+ 1128 00cd 3C       		.uleb128 0x3c
+ 1129 00ce 19       		.uleb128 0x19
+ 1130 00cf 01       		.uleb128 0x1
+ 1131 00d0 13       		.uleb128 0x13
+ 1132 00d1 00       		.byte	0
+ 1133 00d2 00       		.byte	0
+ 1134 00d3 0F       		.uleb128 0xf
+ 1135 00d4 05       		.uleb128 0x5
+ 1136 00d5 00       		.byte	0
+ 1137 00d6 49       		.uleb128 0x49
+ 1138 00d7 13       		.uleb128 0x13
+ 1139 00d8 00       		.byte	0
+ 1140 00d9 00       		.byte	0
+ 1141 00da 10       		.uleb128 0x10
+ 1142 00db 2E       		.uleb128 0x2e
+ 1143 00dc 01       		.byte	0x1
+ 1144 00dd 3F       		.uleb128 0x3f
+ 1145 00de 19       		.uleb128 0x19
+ 1146 00df 03       		.uleb128 0x3
+ 1147 00e0 0E       		.uleb128 0xe
+ 1148 00e1 3A       		.uleb128 0x3a
+ 1149 00e2 0B       		.uleb128 0xb
+ 1150 00e3 3B       		.uleb128 0x3b
+ 1151 00e4 05       		.uleb128 0x5
+ 1152 00e5 27       		.uleb128 0x27
+ 1153 00e6 19       		.uleb128 0x19
+ 1154 00e7 3C       		.uleb128 0x3c
+ 1155 00e8 19       		.uleb128 0x19
+ 1156 00e9 01       		.uleb128 0x1
+ 1157 00ea 13       		.uleb128 0x13
+ 1158 00eb 00       		.byte	0
+ 1159 00ec 00       		.byte	0
+ 1160 00ed 11       		.uleb128 0x11
+ 1161 00ee 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 24
+
+
+ 1162 00ef 01       		.byte	0x1
+ 1163 00f0 3F       		.uleb128 0x3f
+ 1164 00f1 19       		.uleb128 0x19
+ 1165 00f2 03       		.uleb128 0x3
+ 1166 00f3 0E       		.uleb128 0xe
+ 1167 00f4 3A       		.uleb128 0x3a
+ 1168 00f5 0B       		.uleb128 0xb
+ 1169 00f6 3B       		.uleb128 0x3b
+ 1170 00f7 05       		.uleb128 0x5
+ 1171 00f8 27       		.uleb128 0x27
+ 1172 00f9 19       		.uleb128 0x19
+ 1173 00fa 3C       		.uleb128 0x3c
+ 1174 00fb 19       		.uleb128 0x19
+ 1175 00fc 00       		.byte	0
+ 1176 00fd 00       		.byte	0
+ 1177 00fe 00       		.byte	0
+ 1178              		.section	.debug_loc,"",%progbits
+ 1179              	.Ldebug_loc0:
+ 1180              	.LLST0:
+ 1181 0000 00000000 		.4byte	.LVL12
+ 1182 0004 09000000 		.4byte	.LVL13-1
+ 1183 0008 0100     		.2byte	0x1
+ 1184 000a 50       		.byte	0x50
+ 1185 000b 09000000 		.4byte	.LVL13-1
+ 1186 000f 0C000000 		.4byte	.LVL14
+ 1187 0013 0400     		.2byte	0x4
+ 1188 0015 F3       		.byte	0xf3
+ 1189 0016 01       		.uleb128 0x1
+ 1190 0017 50       		.byte	0x50
+ 1191 0018 9F       		.byte	0x9f
+ 1192 0019 0C000000 		.4byte	.LVL14
+ 1193 001d 0E000000 		.4byte	.LVL15
+ 1194 0021 0100     		.2byte	0x1
+ 1195 0023 50       		.byte	0x50
+ 1196 0024 0E000000 		.4byte	.LVL15
+ 1197 0028 14000000 		.4byte	.LFE48
+ 1198 002c 0400     		.2byte	0x4
+ 1199 002e F3       		.byte	0xf3
+ 1200 002f 01       		.uleb128 0x1
+ 1201 0030 50       		.byte	0x50
+ 1202 0031 9F       		.byte	0x9f
+ 1203 0032 00000000 		.4byte	0
+ 1204 0036 00000000 		.4byte	0
+ 1205              	.LLST1:
+ 1206 003a 0E000000 		.4byte	.LVL15
+ 1207 003e 11000000 		.4byte	.LVL16-1
+ 1208 0042 0100     		.2byte	0x1
+ 1209 0044 50       		.byte	0x50
+ 1210 0045 00000000 		.4byte	0
+ 1211 0049 00000000 		.4byte	0
+ 1212              	.LLST2:
+ 1213 004d 00000000 		.4byte	.LVL17
+ 1214 0051 09000000 		.4byte	.LVL18-1
+ 1215 0055 0100     		.2byte	0x1
+ 1216 0057 50       		.byte	0x50
+ 1217 0058 09000000 		.4byte	.LVL18-1
+ 1218 005c 0C000000 		.4byte	.LVL19
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 25
+
+
+ 1219 0060 0400     		.2byte	0x4
+ 1220 0062 F3       		.byte	0xf3
+ 1221 0063 01       		.uleb128 0x1
+ 1222 0064 50       		.byte	0x50
+ 1223 0065 9F       		.byte	0x9f
+ 1224 0066 0C000000 		.4byte	.LVL19
+ 1225 006a 0E000000 		.4byte	.LVL20
+ 1226 006e 0100     		.2byte	0x1
+ 1227 0070 50       		.byte	0x50
+ 1228 0071 0E000000 		.4byte	.LVL20
+ 1229 0075 14000000 		.4byte	.LFE49
+ 1230 0079 0400     		.2byte	0x4
+ 1231 007b F3       		.byte	0xf3
+ 1232 007c 01       		.uleb128 0x1
+ 1233 007d 50       		.byte	0x50
+ 1234 007e 9F       		.byte	0x9f
+ 1235 007f 00000000 		.4byte	0
+ 1236 0083 00000000 		.4byte	0
+ 1237              	.LLST3:
+ 1238 0087 0E000000 		.4byte	.LVL20
+ 1239 008b 11000000 		.4byte	.LVL21-1
+ 1240 008f 0100     		.2byte	0x1
+ 1241 0091 50       		.byte	0x50
+ 1242 0092 00000000 		.4byte	0
+ 1243 0096 00000000 		.4byte	0
+ 1244              	.LLST4:
+ 1245 009a 00000000 		.4byte	.LVL26
+ 1246 009e 1B000000 		.4byte	.LVL31-1
+ 1247 00a2 0100     		.2byte	0x1
+ 1248 00a4 50       		.byte	0x50
+ 1249 00a5 1B000000 		.4byte	.LVL31-1
+ 1250 00a9 1E000000 		.4byte	.LVL32
+ 1251 00ad 0400     		.2byte	0x4
+ 1252 00af F3       		.byte	0xf3
+ 1253 00b0 01       		.uleb128 0x1
+ 1254 00b1 50       		.byte	0x50
+ 1255 00b2 9F       		.byte	0x9f
+ 1256 00b3 1E000000 		.4byte	.LVL32
+ 1257 00b7 20000000 		.4byte	.LVL33
+ 1258 00bb 0100     		.2byte	0x1
+ 1259 00bd 50       		.byte	0x50
+ 1260 00be 20000000 		.4byte	.LVL33
+ 1261 00c2 48000000 		.4byte	.LFE37
+ 1262 00c6 0400     		.2byte	0x4
+ 1263 00c8 F3       		.byte	0xf3
+ 1264 00c9 01       		.uleb128 0x1
+ 1265 00ca 50       		.byte	0x50
+ 1266 00cb 9F       		.byte	0x9f
+ 1267 00cc 00000000 		.4byte	0
+ 1268 00d0 00000000 		.4byte	0
+ 1269              	.LLST5:
+ 1270 00d4 00000000 		.4byte	.LVL26
+ 1271 00d8 08000000 		.4byte	.LVL28
+ 1272 00dc 0100     		.2byte	0x1
+ 1273 00de 51       		.byte	0x51
+ 1274 00df 08000000 		.4byte	.LVL28
+ 1275 00e3 48000000 		.4byte	.LFE37
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 26
+
+
+ 1276 00e7 0400     		.2byte	0x4
+ 1277 00e9 F3       		.byte	0xf3
+ 1278 00ea 01       		.uleb128 0x1
+ 1279 00eb 51       		.byte	0x51
+ 1280 00ec 9F       		.byte	0x9f
+ 1281 00ed 00000000 		.4byte	0
+ 1282 00f1 00000000 		.4byte	0
+ 1283              	.LLST6:
+ 1284 00f5 06000000 		.4byte	.LVL27
+ 1285 00f9 46000000 		.4byte	.LVL41
+ 1286 00fd 0100     		.2byte	0x1
+ 1287 00ff 55       		.byte	0x55
+ 1288 0100 00000000 		.4byte	0
+ 1289 0104 00000000 		.4byte	0
+ 1290              	.LLST7:
+ 1291 0108 08000000 		.4byte	.LVL28
+ 1292 010c 1B000000 		.4byte	.LVL31-1
+ 1293 0110 0100     		.2byte	0x1
+ 1294 0112 51       		.byte	0x51
+ 1295 0113 1E000000 		.4byte	.LVL32
+ 1296 0117 23000000 		.4byte	.LVL34-1
+ 1297 011b 0100     		.2byte	0x1
+ 1298 011d 51       		.byte	0x51
+ 1299 011e 00000000 		.4byte	0
+ 1300 0122 00000000 		.4byte	0
+ 1301              	.LLST8:
+ 1302 0126 0E000000 		.4byte	.LVL29
+ 1303 012a 46000000 		.4byte	.LVL42
+ 1304 012e 0100     		.2byte	0x1
+ 1305 0130 56       		.byte	0x56
+ 1306 0131 00000000 		.4byte	0
+ 1307 0135 00000000 		.4byte	0
+ 1308              	.LLST9:
+ 1309 0139 12000000 		.4byte	.LVL30
+ 1310 013d 46000000 		.4byte	.LVL40
+ 1311 0141 0100     		.2byte	0x1
+ 1312 0143 54       		.byte	0x54
+ 1313 0144 00000000 		.4byte	0
+ 1314 0148 00000000 		.4byte	0
+ 1315              	.LLST10:
+ 1316 014c 00000000 		.4byte	.LVL43
+ 1317 0150 07000000 		.4byte	.LVL44-1
+ 1318 0154 0100     		.2byte	0x1
+ 1319 0156 50       		.byte	0x50
+ 1320 0157 07000000 		.4byte	.LVL44-1
+ 1321 015b 10000000 		.4byte	.LFE47
+ 1322 015f 0400     		.2byte	0x4
+ 1323 0161 F3       		.byte	0xf3
+ 1324 0162 01       		.uleb128 0x1
+ 1325 0163 50       		.byte	0x50
+ 1326 0164 9F       		.byte	0x9f
+ 1327 0165 00000000 		.4byte	0
+ 1328 0169 00000000 		.4byte	0
+ 1329              		.section	.debug_aranges,"",%progbits
+ 1330 0000 7C000000 		.4byte	0x7c
+ 1331 0004 0200     		.2byte	0x2
+ 1332 0006 00000000 		.4byte	.Ldebug_info0
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 27
+
+
+ 1333 000a 04       		.byte	0x4
+ 1334 000b 00       		.byte	0
+ 1335 000c 0000     		.2byte	0
+ 1336 000e 0000     		.2byte	0
+ 1337 0010 00000000 		.4byte	.LFB43
+ 1338 0014 0A000000 		.4byte	.LFE43-.LFB43
+ 1339 0018 00000000 		.4byte	.LFB44
+ 1340 001c 0A000000 		.4byte	.LFE44-.LFB44
+ 1341 0020 00000000 		.4byte	.LFB45
+ 1342 0024 0A000000 		.4byte	.LFE45-.LFB45
+ 1343 0028 00000000 		.4byte	.LFB38
+ 1344 002c 0C000000 		.4byte	.LFE38-.LFB38
+ 1345 0030 00000000 		.4byte	.LFB40
+ 1346 0034 0C000000 		.4byte	.LFE40-.LFB40
+ 1347 0038 00000000 		.4byte	.LFB46
+ 1348 003c 0A000000 		.4byte	.LFE46-.LFB46
+ 1349 0040 00000000 		.4byte	.LFB39
+ 1350 0044 0C000000 		.4byte	.LFE39-.LFB39
+ 1351 0048 00000000 		.4byte	.LFB41
+ 1352 004c 0C000000 		.4byte	.LFE41-.LFB41
+ 1353 0050 00000000 		.4byte	.LFB48
+ 1354 0054 14000000 		.4byte	.LFE48-.LFB48
+ 1355 0058 00000000 		.4byte	.LFB49
+ 1356 005c 14000000 		.4byte	.LFE49-.LFB49
+ 1357 0060 00000000 		.4byte	.LFB42
+ 1358 0064 1C000000 		.4byte	.LFE42-.LFB42
+ 1359 0068 00000000 		.4byte	.LFB37
+ 1360 006c 48000000 		.4byte	.LFE37-.LFB37
+ 1361 0070 00000000 		.4byte	.LFB47
+ 1362 0074 10000000 		.4byte	.LFE47-.LFB47
+ 1363 0078 00000000 		.4byte	0
+ 1364 007c 00000000 		.4byte	0
+ 1365              		.section	.debug_ranges,"",%progbits
+ 1366              	.Ldebug_ranges0:
+ 1367 0000 00000000 		.4byte	.LFB43
+ 1368 0004 0A000000 		.4byte	.LFE43
+ 1369 0008 00000000 		.4byte	.LFB44
+ 1370 000c 0A000000 		.4byte	.LFE44
+ 1371 0010 00000000 		.4byte	.LFB45
+ 1372 0014 0A000000 		.4byte	.LFE45
+ 1373 0018 00000000 		.4byte	.LFB38
+ 1374 001c 0C000000 		.4byte	.LFE38
+ 1375 0020 00000000 		.4byte	.LFB40
+ 1376 0024 0C000000 		.4byte	.LFE40
+ 1377 0028 00000000 		.4byte	.LFB46
+ 1378 002c 0A000000 		.4byte	.LFE46
+ 1379 0030 00000000 		.4byte	.LFB39
+ 1380 0034 0C000000 		.4byte	.LFE39
+ 1381 0038 00000000 		.4byte	.LFB41
+ 1382 003c 0C000000 		.4byte	.LFE41
+ 1383 0040 00000000 		.4byte	.LFB48
+ 1384 0044 14000000 		.4byte	.LFE48
+ 1385 0048 00000000 		.4byte	.LFB49
+ 1386 004c 14000000 		.4byte	.LFE49
+ 1387 0050 00000000 		.4byte	.LFB42
+ 1388 0054 1C000000 		.4byte	.LFE42
+ 1389 0058 00000000 		.4byte	.LFB37
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 28
+
+
+ 1390 005c 48000000 		.4byte	.LFE37
+ 1391 0060 00000000 		.4byte	.LFB47
+ 1392 0064 10000000 		.4byte	.LFE47
+ 1393 0068 00000000 		.4byte	0
+ 1394 006c 00000000 		.4byte	0
+ 1395              		.section	.debug_line,"",%progbits
+ 1396              	.Ldebug_line0:
+ 1397 0000 B8010000 		.section	.debug_str,"MS",%progbits,1
+ 1397      02009F00 
+ 1397      00000201 
+ 1397      FB0E0D00 
+ 1397      01010101 
+ 1398              	.LASF30:
+ 1399 0000 6D6F746F 		.ascii	"motorspeeds\000"
+ 1399      72737065 
+ 1399      65647300 
+ 1400              	.LASF37:
+ 1401 000c 6C656674 		.ascii	"left_speedcontroller_WriteCompare\000"
+ 1401      5F737065 
+ 1401      6564636F 
+ 1401      6E74726F 
+ 1401      6C6C6572 
+ 1402              	.LASF32:
+ 1403 002e 6C656674 		.ascii	"leftMotorSpeed\000"
+ 1403      4D6F746F 
+ 1403      72537065 
+ 1403      656400
+ 1404              	.LASF40:
+ 1405 003d 433A5C55 		.ascii	"C:\\Users\\alvin\\Desktop\\ece445\\deliverable\\rob"
+ 1405      73657273 
+ 1405      5C616C76 
+ 1405      696E5C44 
+ 1405      65736B74 
+ 1406 006a 6F745F6B 		.ascii	"ot_kit_firmware.cydsn\000"
+ 1406      69745F66 
+ 1406      69726D77 
+ 1406      6172652E 
+ 1406      63796473 
+ 1407              	.LASF23:
+ 1408 0080 6C656674 		.ascii	"leftmotor_setspeed\000"
+ 1408      6D6F746F 
+ 1408      725F7365 
+ 1408      74737065 
+ 1408      656400
+ 1409              	.LASF8:
+ 1410 0093 756E7369 		.ascii	"unsigned int\000"
+ 1410      676E6564 
+ 1410      20696E74 
+ 1410      00
+ 1411              	.LASF17:
+ 1412 00a0 72696768 		.ascii	"rightmotor_fwd\000"
+ 1412      746D6F74 
+ 1412      6F725F66 
+ 1412      776400
+ 1413              	.LASF12:
+ 1414 00af 646F7562 		.ascii	"double\000"
+ 1414      6C6500
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 29
+
+
+ 1415              	.LASF16:
+ 1416 00b6 6C656674 		.ascii	"leftmotor_rev\000"
+ 1416      6D6F746F 
+ 1416      725F7265 
+ 1416      7600
+ 1417              	.LASF11:
+ 1418 00c4 666C6F61 		.ascii	"float\000"
+ 1418      7400
+ 1419              	.LASF7:
+ 1420 00ca 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1420      206C6F6E 
+ 1420      6720756E 
+ 1420      7369676E 
+ 1420      65642069 
+ 1421              	.LASF1:
+ 1422 00e1 756E7369 		.ascii	"unsigned char\000"
+ 1422      676E6564 
+ 1422      20636861 
+ 1422      7200
+ 1423              	.LASF36:
+ 1424 00ef 72696768 		.ascii	"right_control_Write\000"
+ 1424      745F636F 
+ 1424      6E74726F 
+ 1424      6C5F5772 
+ 1424      69746500 
+ 1425              	.LASF19:
+ 1426 0103 726F7461 		.ascii	"rotate_left\000"
+ 1426      74655F6C 
+ 1426      65667400 
+ 1427              	.LASF9:
+ 1428 010f 75696E74 		.ascii	"uint8\000"
+ 1428      3800
+ 1429              	.LASF24:
+ 1430 0115 72696768 		.ascii	"rightmotor_setspeed\000"
+ 1430      746D6F74 
+ 1430      6F725F73 
+ 1430      65747370 
+ 1430      65656400 
+ 1431              	.LASF15:
+ 1432 0129 6C656674 		.ascii	"leftmotor_fwd\000"
+ 1432      6D6F746F 
+ 1432      725F6677 
+ 1432      6400
+ 1433              	.LASF33:
+ 1434 0137 72696768 		.ascii	"rightMotorDirection\000"
+ 1434      744D6F74 
+ 1434      6F724469 
+ 1434      72656374 
+ 1434      696F6E00 
+ 1435              	.LASF27:
+ 1436 014b 6D6F746F 		.ascii	"motor_stop\000"
+ 1436      725F7374 
+ 1436      6F7000
+ 1437              	.LASF26:
+ 1438 0156 73657473 		.ascii	"setspeed\000"
+ 1438      70656564 
+ 1438      00
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 30
+
+
+ 1439              	.LASF10:
+ 1440 015f 75696E74 		.ascii	"uint32\000"
+ 1440      333200
+ 1441              	.LASF5:
+ 1442 0166 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1442      20756E73 
+ 1442      69676E65 
+ 1442      6420696E 
+ 1442      7400
+ 1443              	.LASF35:
+ 1444 0178 6C656674 		.ascii	"left_control_Write\000"
+ 1444      5F636F6E 
+ 1444      74726F6C 
+ 1444      5F577269 
+ 1444      746500
+ 1445              	.LASF21:
+ 1446 018b 6D6F7665 		.ascii	"move_rev\000"
+ 1446      5F726576 
+ 1446      00
+ 1447              	.LASF13:
+ 1448 0194 63686172 		.ascii	"char\000"
+ 1448      00
+ 1449              	.LASF22:
+ 1450 0199 726F7461 		.ascii	"rotate_right\000"
+ 1450      74655F72 
+ 1450      69676874 
+ 1450      00
+ 1451              	.LASF25:
+ 1452 01a6 73706565 		.ascii	"speed\000"
+ 1452      6400
+ 1453              	.LASF14:
+ 1454 01ac 73697A65 		.ascii	"sizetype\000"
+ 1454      74797065 
+ 1454      00
+ 1455              	.LASF38:
+ 1456 01b5 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1456      4320342E 
+ 1456      392E3320 
+ 1456      32303135 
+ 1456      30333033 
+ 1457 01e8 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 1457      20726576 
+ 1457      6973696F 
+ 1457      6E203232 
+ 1457      31323230 
+ 1458 021b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1458      66756E63 
+ 1458      74696F6E 
+ 1458      2D736563 
+ 1458      74696F6E 
+ 1459              	.LASF6:
+ 1460 0243 6C6F6E67 		.ascii	"long long int\000"
+ 1460      206C6F6E 
+ 1460      6720696E 
+ 1460      7400
+ 1461              	.LASF39:
+ 1462 0251 2E5C6D6F 		.ascii	".\\motors.c\000"
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 31
+
+
+ 1462      746F7273 
+ 1462      2E6300
+ 1463              	.LASF18:
+ 1464 025c 6D6F7665 		.ascii	"move_fwd\000"
+ 1464      5F667764 
+ 1464      00
+ 1465              	.LASF41:
+ 1466 0265 72696768 		.ascii	"right_speedcontroller_WriteCompare\000"
+ 1466      745F7370 
+ 1466      65656463 
+ 1466      6F6E7472 
+ 1466      6F6C6C65 
+ 1467              	.LASF31:
+ 1468 0288 72696768 		.ascii	"rightMotorSpeed\000"
+ 1468      744D6F74 
+ 1468      6F725370 
+ 1468      65656400 
+ 1469              	.LASF2:
+ 1470 0298 73686F72 		.ascii	"short int\000"
+ 1470      7420696E 
+ 1470      7400
+ 1471              	.LASF29:
+ 1472 02a2 6D6F746F 		.ascii	"motorcontrol\000"
+ 1472      72636F6E 
+ 1472      74726F6C 
+ 1472      00
+ 1473              	.LASF4:
+ 1474 02af 6C6F6E67 		.ascii	"long int\000"
+ 1474      20696E74 
+ 1474      00
+ 1475              	.LASF0:
+ 1476 02b8 7369676E 		.ascii	"signed char\000"
+ 1476      65642063 
+ 1476      68617200 
+ 1477              	.LASF34:
+ 1478 02c4 6C656674 		.ascii	"leftMotorDirection\000"
+ 1478      4D6F746F 
+ 1478      72446972 
+ 1478      65637469 
+ 1478      6F6E00
+ 1479              	.LASF3:
+ 1480 02d7 73686F72 		.ascii	"short unsigned int\000"
+ 1480      7420756E 
+ 1480      7369676E 
+ 1480      65642069 
+ 1480      6E7400
+ 1481              	.LASF28:
+ 1482 02ea 68616E64 		.ascii	"handleMotors\000"
+ 1482      6C654D6F 
+ 1482      746F7273 
+ 1482      00
+ 1483              	.LASF20:
+ 1484 02f7 72696768 		.ascii	"rightmotor_rev\000"
+ 1484      746D6F74 
+ 1484      6F725F72 
+ 1484      657600
+ 1485              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
+ARM GAS  C:\Users\alvin\AppData\Local\Temp\cc6uIbqV.s 			page 32
+
+

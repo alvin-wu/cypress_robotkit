@@ -1,0 +1,5 @@
+C:\Users\alvin\Desktop\ece445\deliverable\robot_kit_firmware.cydsn\robot_kit_firmware.cyprj|d3b1cec3-61a8-4e9f-a5e7-3dcc38f1bbb9
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|38ff64e6-2235-404b-8fd1-2795faa1b439
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|67b2f63d-baa1-470c-bfdd-19c30369ce0d
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|d297d645-f77f-4133-907f-03e778a3a856
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|6aea660a-1c4e-4e12-a8e9-1e556ec001fb

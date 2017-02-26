@@ -1,0 +1,57 @@
+dont_use_io iocell 0 6
+dont_use_io iocell 0 7
+dont_use_io iocell 6 0
+dont_use_io iocell 6 1
+set_location "\pwm:PWMUDB:prevCompare1\" macrocell 0 0 1 0
+set_location "Net_2827" macrocell 1 1 0 0
+set_location "\Timer_2:TimerUDB:sT16:timerdp:u1\" datapathcell 1 1 2 
+set_location "\pwm:PWMUDB:sP16:pwmdp:u1\" datapathcell 0 0 2 
+set_location "\Timer_2:TimerUDB:sT16:timerdp:u0\" datapathcell 0 1 2 
+set_location "\pwm:PWMUDB:runmode_enable\" macrocell 0 0 0 0
+set_location "Net_2442" macrocell 1 0 1 2
+set_location "Net_2373" macrocell 1 1 0 3
+set_location "\pwm:PWMUDB:sP16:pwmdp:u0\" datapathcell 1 0 2 
+set_location "\pwm:PWMUDB:status_2\" macrocell 0 0 0 1
+set_location "Net_111" macrocell 0 0 0 2
+set_location "\Timer_2:TimerUDB:rstSts:stsreg\" statusicell 1 1 4 
+set_location "\Timer_2:TimerUDB:status_tc\" macrocell 0 1 1 2
+set_location "Net_79" macrocell 0 0 0 3
+set_location "\pwm:PWMUDB:status_0\" macrocell 0 0 1 1
+set_location "Net_2440" macrocell 1 0 0 3
+set_location "Net_2371" macrocell 1 1 0 2
+set_location "\pwm:PWMUDB:genblk8:stsreg\" statusicell 0 0 4 
+set_io "\LCD_display:LCDPort(4)\" iocell 1 4
+set_location "ClockBlock" m0s8clockblockcell -1 -1 0
+set_location "isr_2" interrupt -1 -1 1
+set_location "\right_speedcontroller:cy_m0s8_tcpwm_1\" m0s8tcpwmcell -1 -1 0
+set_location "\Timer_2:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" controlcell 0 1 6 
+set_location "\Timer_1:cy_m0s8_tcpwm_1\" m0s8tcpwmcell -1 -1 1
+set_location "\IR_ADC:cy_psoc4_sar\" p4sarcell -1 -1 0
+set_io "\LCD_display:LCDPort(6)\" iocell 1 6
+set_io "\LCD_display:LCDPort(5)\" iocell 1 5
+set_io "blue(0)" iocell 3 7
+set_io "\LCD_display:LCDPort(2)\" iocell 1 2
+set_io "left_forward(0)" iocell 0 2
+set_io "left_backward(0)" iocell 0 1
+set_location "\left_control:Sync:ctrl_reg\" controlcell 1 1 6 
+set_location "\right_control:Sync:ctrl_reg\" controlcell 1 0 6 
+set_io "right_backward(0)" iocell 0 4
+set_io "right_forward(0)" iocell 0 3
+# Warning: unknown type "p4sarmuxcell"
+#set_location "\IR_ADC:cy_psoc4_sarmux_8\" p4sarmuxcell -1 -1 -1 -1
+set_location "\left_speedcontroller:cy_m0s8_tcpwm_1\" m0s8tcpwmcell -1 -1 2
+set_location "\ble:cy_m0s8_ble\" p4blecell -1 -1 0
+set_location "\IR_ADC:IRQ\" interrupt -1 -1 15
+set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
+set_location "isr_1" interrupt -1 -1 18
+set_location "\ble:bless_isr\" interrupt -1 -1 12
+set_io "\LCD_display:LCDPort(1)\" iocell 1 1
+set_io "ECHO_pin(0)" iocell 3 2
+set_io "red(0)" iocell 2 6
+set_io "green(0)" iocell 3 6
+set_io "IR_pin1(0)" iocell 3 5
+set_io "IR_pin2(0)" iocell 3 1
+set_io "\LCD_display:LCDPort(0)\" iocell 1 0
+set_io "TRIGGER_pin(0)" iocell 3 3
+set_io "\LCD_display:LCDPort(3)\" iocell 1 3
+set_location "\pwm:PWMUDB:genblk1:ctrlreg\" controlcell 0 0 6 
