@@ -8,6 +8,11 @@ Winner of the Fall 2016 Instructor's Award.
 This repository contains the open-sourced material to build your own robot kit. 
 This includes the firmware code, the Android phone application, as well as Eagle schematics.
 
+##Instructions
+The firmware code has already been packaged into a project folder in robot_kit_firmware.cydsn. To open this project, download PSoC Creator and simply open this project folder.
+
+Similarly, to open the Android project folder, use Android Studio and select this folder as the project you wish to use.
+
 ##Motivation 
 New market of makers and hobbyists.
 
