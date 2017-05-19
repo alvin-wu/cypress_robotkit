@@ -3,7 +3,10 @@ Alvin Wu | Todd Nguyen | Byung Joo Park
 University of Illinois Urbana Champaign 
 
 Autonomous Robot kit developed as a University of Illinois Senior Design project for Cypress Semiconductor. 
+
 Winner of the Fall 2016 Instructor's Award. 
+
+Featured as Cypress' Maker of the Month: http://core.cypress.com/cypress-maker-of-the-month-alvin-wu-and-todd-nguyen/#.WR6BGmjyu7P
 
 This repository contains the open-sourced material to build your own robot kit. 
 This includes the firmware code, the Android phone application, as well as Eagle schematics.
