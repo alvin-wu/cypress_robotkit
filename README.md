@@ -23,20 +23,20 @@ Alternative: PSoC
 ## Objectives & Features
 Goal: Design and build a robot kit to demonstrate the capabilities of the PSoC
 
-“Kit-able” design with easy construction
+* “Kit-able” design with easy construction
 
-Inexpensive to make it more accessible for hobbyist (under $150)
+* Inexpensive to make it more accessible for hobbyist (under $150)
 
-Plug-and-play experience to demonstrate the PSoC capabilities 
+* Plug-and-play experience to demonstrate the PSoC capabilities 
 
 ## Features
-Mountable shield that provides power system, motor control, and sensors for PSoC.
+* Mountable shield that provides power system, motor control, and sensors for PSoC.
 
-Remote control using Bluetooth Low Energy (BLE) and phone application.
+* Remote control using Bluetooth Low Energy (BLE) and phone application.
 
-Ability to switch between manual control and autonomous modes on the phone application .
+* Ability to switch between manual control and autonomous modes on the phone application .
 
-Autonomous obstacle avoidance using sonar sensor.
+* Autonomous obstacle avoidance using sonar sensor.
 
-Autonomous line following with IR emitting sensors.
+* Autonomous line following with IR emitting sensors.
 
